@@ -10,7 +10,7 @@ async function getItems() {
     await page.goto(CONNECTIONS_URL);
 
     // Fetch board
-    const items$ = await page.$$('.item');
+    const items$ = await page.$$('#pz-game-root label');
 
     if (items$.length !== 16) {
         throw new Error(`Failed to find all 16 words on the board. Found ${items$.length} word(s).`);
