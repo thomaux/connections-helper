@@ -7,24 +7,20 @@
 
 <body>
     <div class="flex-grid">
-        <% items.forEach(function(item, idx) { %>
-            <% if(idx % 4===0) { %>
-                <div class="row">
-                    <% } %>
-                        <div class="item" id="item-<%= idx %>">
-                            <%= item %>
-                        </div>
-                        <% if(idx % 4===3) { %>
-                </div>
-                <% } %>
-                    <% }) %>
+        <div id="row-0" class="row"></div>
+        <div id="row-1" class="row"></div>
+        <div id="row-2" class="row"></div>
+        <div id="row-3" class="row"></div>      
+    </div>
+    <div id="loader-container">
+        <span class="loader"></span>
     </div>
     <div id="color-toolbar">
-        <button class="yellow"></button>
-        <button class="green"></button>
-        <button class="blue"></button>
-        <button class="purple"></button>
-        <button id="eraser">Clear</button>
+        <button id="yellow" class="yellow" disabled></button>
+        <button id="green" class="green" disabled></button>
+        <button id="blue" class="blue" disabled></button>
+        <button id="purple" class="purple" disabled></button>
+        <button id="eraser" disabled>Clear</button>
     </div>
     <script src="https://unpkg.com/redux@4.2.1/dist/redux.min.js"></script>
     <script src="./app.js"></script>

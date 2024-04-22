@@ -23,7 +23,7 @@ const defaultState = {
         'item-13': [],
         'item-14': [],
         'item-15': [],
-    }
+    },
 };
 
 const store = Redux.createStore((state = defaultState, action) => {
@@ -31,7 +31,7 @@ const store = Redux.createStore((state = defaultState, action) => {
         case actionTypes.SET_COLOR:
             return {
                 ...state,
-                activeColor: action.color,
+                activeColor: action.color === state.activeColor ? undefined : action.color,
             };
 
         case actionTypes.SELECT_ITEM:
@@ -88,18 +88,45 @@ store.subscribe(() => {
     }
 });
 
-document.querySelectorAll('.item').forEach(item => {
-    item.addEventListener('click', event => {
-        store.dispatch({ type: actionTypes.SELECT_ITEM, id: event.target.id })
-    });
-});
-
 document.querySelectorAll('#color-toolbar button').forEach(button => {
     button.addEventListener('click', event => {
         if (event.target.id === 'eraser') {
             store.dispatch({ type: actionTypes.CLEAR });
         } else {
-            store.dispatch({ type: actionTypes.SET_COLOR, color: event.target.className });
+            store.dispatch({ type: actionTypes.SET_COLOR, color: event.target.id });
         }
     });
 });
+
+fetch('/api/connections').then(response => response.json()).then(items => {
+    const chunkedItems = chunkItems(items);
+    chunkedItems.forEach((chunk, chunkIdx) => {
+        const row = document.getElementById(`row-${chunkIdx}`);
+        chunk.forEach((item, itemIdx) => {
+            row.appendChild(createItemElement(item, itemIdx + (chunkIdx * 4)));
+        });
+    });
+    document.getElementById('loader-container').remove();
+    document.querySelectorAll('button').forEach(button => button.disabled = false);
+});
+
+function chunkItems(items) {
+    const chunkedItems = [];
+    for (let i = 0; i < items.length; i += 4) {
+        chunkedItems.push(items.slice(i, i + 4));
+    }
+    return chunkedItems;
+}
+
+function createItemElement(word, id) {
+    const el = document.createElement('div');
+    el.classList.add('item');
+    el.id = `item-${id}`;
+    el.textContent = word;
+
+    el.addEventListener('click', event => {
+        store.dispatch({ type: actionTypes.SELECT_ITEM, id: event.target.id })
+    });
+
+    return el;
+}

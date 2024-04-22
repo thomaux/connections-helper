@@ -1,8 +1,10 @@
 {
-  "azureFunctions.deploySubpath": ".",
-  "azureFunctions.projectLanguage": "TypeScript",
+  "azureFunctions.deploySubpath": "api",
+  "azureFunctions.projectLanguage": "JavaScript",
   "azureFunctions.projectRuntime": "~4",
   "debug.internalConsoleOptions": "neverOpen",
   "azureFunctions.projectLanguageModel": 4,
-  "azureFunctions.scmDoBuildDuringDeployment": true
+  "azureFunctions.scmDoBuildDuringDeployment": true,
+  "azureFunctions.postDeployTask": "npm install (functions)",
+  "azureFunctions.preDeployTask": "npm prune (functions)"
 }

@@ -1,0 +1,218 @@
+:root {
+    --purple: #ba81c5;
+    --yellow: #f9df6d;
+    --green: #a0c35a;
+    --blue: #b0c4ef;
+    --loader-color: #efefe6;
+}
+
+@property --bg-left {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #efefe6;
+}
+
+@property --bg-right {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #efefe6;
+}
+
+html {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.flex-grid {
+    display: flex;
+    flex-direction: column
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#color-toolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.item,
+button {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.item {
+    --bg-left: #efefe6;
+    --bg-right: #efefe6;
+    width: 150px;
+    margin: 20px;
+    background: linear-gradient(155deg, var(--bg-left) 50%, var(--bg-right) 50%);
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: --bg-left 0.2s ease-in-out, --bg-right 0.2s ease-in-out;
+}
+
+button {
+    --bg-left: rgb(239, 239, 239);
+    width: 120px;
+    margin: 15px;
+    border: none;
+    background-color: var(--bg-left);
+}
+
+button[disabled] {
+    cursor: not-allowed;
+}
+
+button:first-child {
+    margin-left: 20px;
+}
+
+button:last-child {
+    margin-right: 20px;
+}
+
+button.active {
+    border: 3px solid #5a594e;
+}
+
+.purple {
+    --bg-left: var(--purple);
+    --bg-right: var(--purple);
+}
+
+.green {
+    --bg-left: var(--green);
+    --bg-right: var(--green);
+}
+
+.blue {
+    --bg-left: var(--blue);
+    --bg-right: var(--blue);
+}
+
+.yellow {
+    --bg-left: var(--yellow);
+    --bg-right: var(--yellow);
+}
+
+.purple.yellow {
+    --bg-left: var(--purple);
+    --bg-right: var(--yellow);
+}
+.purple.green {
+    --bg-left: var(--purple);
+    --bg-right: var(--green);
+}
+.purple.blue {
+    --bg-left: var(--purple);
+    --bg-right: var(--blue);
+}
+.blue.yellow {
+    --bg-left: var(--blue);
+    --bg-right: var(--yellow);
+}
+.blue.green {
+    --bg-left: var(--blue);
+    --bg-right: var(--green);
+}
+.green.yellow {
+    --bg-left: var(--green);
+    --bg-right: var(--yellow);
+}
+
+#loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 480px;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    display: inline-block;
+    position: relative;
+    transform: rotate(45deg);
+  }
+  .loader::before {
+    content: '';  
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: 0;
+    top: -24px;
+    animation: animloader 4s ease infinite;
+  }
+  .loader::after {
+    content: '';  
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    animation: animloader2 2s ease infinite;
+  }
+  
+  @keyframes animloader {
+    0% {
+      box-shadow: 0 24px rgba(255, 255, 255, 0), 24px 24px rgba(255, 255, 255, 0), 24px 48px rgba(255, 255, 255, 0), 0px 48px rgba(255, 255, 255, 0);
+    }
+    12% {
+      box-shadow: 0 24px var(--loader-color), 24px 24px rgba(255, 255, 255, 0), 24px 48px rgba(255, 255, 255, 0), 0px 48px rgba(255, 255, 255, 0);
+    }
+    25% {
+      box-shadow: 0 24px var(--loader-color), 24px 24px var(--loader-color), 24px 48px rgba(255, 255, 255, 0), 0px 48px rgba(255, 255, 255, 0);
+    }
+    37% {
+      box-shadow: 0 24px var(--loader-color), 24px 24px var(--loader-color), 24px 48px var(--loader-color), 0px 48px rgba(255, 255, 255, 0);
+    }
+    50% {
+      box-shadow: 0 24px var(--loader-color), 24px 24px var(--loader-color), 24px 48px var(--loader-color), 0px 48px var(--loader-color);
+    }
+    62% {
+      box-shadow: 0 24px rgba(255, 255, 255, 0), 24px 24px var(--loader-color), 24px 48px var(--loader-color), 0px 48px var(--loader-color);
+    }
+    75% {
+      box-shadow: 0 24px rgba(255, 255, 255, 0), 24px 24px rgba(255, 255, 255, 0), 24px 48px var(--loader-color), 0px 48px var(--loader-color);
+    }
+    87% {
+      box-shadow: 0 24px rgba(255, 255, 255, 0), 24px 24px rgba(255, 255, 255, 0), 24px 48px rgba(255, 255, 255, 0), 0px 48px var(--loader-color);
+    }
+    100% {
+      box-shadow: 0 24px rgba(255, 255, 255, 0), 24px 24px rgba(255, 255, 255, 0), 24px 48px rgba(255, 255, 255, 0), 0px 48px rgba(255, 255, 255, 0);
+    }
+  }
+  
+  @keyframes animloader2 {
+    0% {
+      transform: translate(0, 0) rotateX(0) rotateY(0);
+    }
+    25% {
+      transform: translate(100%, 0) rotateX(0) rotateY(180deg);
+    }
+    50% {
+      transform: translate(100%, 100%) rotateX(-180deg) rotateY(180deg);
+    }
+    75% {
+      transform: translate(0, 100%) rotateX(-180deg) rotateY(360deg);
+    }
+    100% {
+      transform: translate(0, 0) rotateX(0) rotateY(360deg);
+    }
+  }
+      
