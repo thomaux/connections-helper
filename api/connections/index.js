@@ -1,4 +1,3 @@
-const { app, HttpRequest, HttpResponseInit, InvocationContext } = require("@azure/functions");
 const puppeteer = require('puppeteer');
 
 const CONNECTIONS_URL = 'https://www.nytimes.com/games/connections';
@@ -31,14 +30,4 @@ module.exports = async function (context, req) {
     } catch (error) {
         context.res = { body: error.message, status: 500 };
     }
-
-    // const name = (req.query.name || (req.body && req.body.name));
-    // const responseMessage = name
-    //     ? "Hello, " + name + ". This HTTP triggered function executed successfully."
-    //     : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
-
-    // context.res = {
-    //     // status: 200, /* Defaults to 200 */
-    //     body: responseMessage
-    // };
 }
