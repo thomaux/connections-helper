@@ -35,6 +35,10 @@ const store = Redux.createStore((state = defaultState, action) => {
             };
 
         case actionTypes.SELECT_ITEM:
+            if(!state.activeColor) {
+                return state;
+            }
+
             // Toggle color
             if (state.items[action.id].includes(state.activeColor)) {
                 return {
@@ -79,9 +83,7 @@ store.subscribe(() => {
         item.classList.add(...colors);
     });
 
-    document.querySelectorAll('#color-toolbar button').forEach(button => {
-        button.classList.remove('active');
-    });
+    document.querySelectorAll('#color-toolbar button').forEach(button => button.classList.remove('active'));
 
     if (state.activeColor) {
         document.querySelector(`#color-toolbar .${state.activeColor}`).classList.add('active');
