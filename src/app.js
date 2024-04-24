@@ -1,4 +1,5 @@
 const actionTypes = {
+    SET_ITEMS: 'SET_ITEMS',
     SET_COLOR: 'SET_COLOR',
     CLEAR: 'CLEAR',
     SELECT_ITEM: 'SELECT_ITEM',
@@ -6,28 +7,17 @@ const actionTypes = {
 
 const defaultState = {
     activeColor: undefined,
-    items: {
-        'item-0': [],
-        'item-1': [],
-        'item-2': [],
-        'item-3': [],
-        'item-4': [],
-        'item-5': [],
-        'item-6': [],
-        'item-7': [],
-        'item-8': [],
-        'item-9': [],
-        'item-10': [],
-        'item-11': [],
-        'item-12': [],
-        'item-13': [],
-        'item-14': [],
-        'item-15': [],
-    },
+    items: [],
 };
 
 const store = Redux.createStore((state = defaultState, action) => {
     switch (action.type) {
+        case actionTypes.SET_ITEMS:
+            return {
+                ...state,
+                items: action.items.map((item, idx) => new Item(idx, item)),
+            };
+
         case actionTypes.SET_COLOR:
             return {
                 ...state,
@@ -39,32 +29,16 @@ const store = Redux.createStore((state = defaultState, action) => {
                 return state;
             }
 
-            // Toggle color
-            if (state.items[action.id].includes(state.activeColor)) {
-                return {
-                    ...state,
-                    items: {
-                        ...state.items,
-                        [action.id]: state.items[action.id].filter(color => color !== state.activeColor),
-                    }
-                };
-            }
-
-            // Don't allow more than 2 colors per word
-            if (state.items[action.id].length >= 2) {
-                return state;
-            }
-
             return {
                 ...state,
-                items: {
-                    ...state.items,
-                    [action.id]: [...state.items[action.id], state.activeColor]
-                }
+                items: state.items.map(item => item.id === action.id ? item.toggleColor(state.activeColor) : item),
             };
 
         case actionTypes.CLEAR:
-            return defaultState;
+            return {
+                ...defaultState,
+                items: state.items.map(item => new Item(item.id, item.word)),
+            };
 
         default:
             return state;
@@ -73,16 +47,9 @@ const store = Redux.createStore((state = defaultState, action) => {
 
 store.subscribe(() => {
     const state = store.getState();
-    Object.entries(state.items).forEach(([id, colors]) => {
-        const item = document.getElementById(id);
-        if (!item) {
-            throw new Error(`Could not find element with id ${id}`);
-        }
 
-        item.classList.remove('purple', 'green', 'blue', 'yellow');
-        item.classList.add(...colors);
-    });
-
+    render(state.items);
+    
     document.querySelectorAll('#color-toolbar button').forEach(button => button.classList.remove('active'));
 
     if (state.activeColor) {
@@ -101,16 +68,20 @@ document.querySelectorAll('#color-toolbar button').forEach(button => {
 });
 
 fetch('/api/connections').then(response => response.json()).then(items => {
-    const chunkedItems = chunkItems(items);
-    chunkedItems.forEach((chunk, chunkIdx) => {
-        const row = document.getElementById(`row-${chunkIdx}`);
-        chunk.forEach((item, itemIdx) => {
-            row.appendChild(createItemElement(item, itemIdx + (chunkIdx * 4)));
-        });
-    });
+    store.dispatch({ type: actionTypes.SET_ITEMS, items });
+    // TODO: move these also to the subscribe
     document.getElementById('loader-container').remove();
     document.querySelectorAll('button').forEach(button => button.disabled = false);
 });
+
+function render(items) {
+    const chunkedItems = chunkItems(items);
+    chunkedItems.forEach((chunk, chunkIdx) => {
+        const row = document.getElementById(`row-${chunkIdx}`);
+        row.innerHTML = '';
+        chunk.forEach((item) => row.appendChild(createItemElement(item)));
+    });
+}
 
 function chunkItems(items) {
     const chunkedItems = [];
@@ -120,15 +91,33 @@ function chunkItems(items) {
     return chunkedItems;
 }
 
-function createItemElement(word, id) {
+function createItemElement({ id, word, colors }) {
     const el = document.createElement('div');
-    el.classList.add('item');
+    el.classList.add('item', ...colors);
     el.id = `item-${id}`;
     el.textContent = word;
 
-    el.addEventListener('click', event => {
-        store.dispatch({ type: actionTypes.SELECT_ITEM, id: event.target.id })
-    });
+    el.addEventListener('click', () => store.dispatch({ type: actionTypes.SELECT_ITEM, id }));
 
     return el;
+}
+
+class Item {
+    constructor(id, word, colors = []) {
+        this.id = id;
+        this.word = word;
+        this.colors = colors;
+    }
+
+    toggleColor(color) {
+        if(this.colors.includes(color)) {
+            return new Item(this.id, this.word, this.colors.filter(c => c !== color));
+        }
+
+        if (this.colors.length >= 2) {
+            return this;
+        }
+
+        return new Item(this.id, this.word, [...this.colors, color]);
+    }
 }
