@@ -1,0 +1,61 @@
+.Cell {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: none;
+
+    width: 150px;
+    margin: 20px;
+    background: linear-gradient(155deg, var(--bg-left) 50%, var(--bg-right) 50%);
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: --bg-left 0.2s ease-in-out, --bg-right 0.2s ease-in-out;
+}
+
+.Purple {
+    --bg-left: var(--purple);
+    --bg-right: var(--purple);
+}
+
+.Green {
+    --bg-left: var(--green);
+    --bg-right: var(--green);
+}
+
+.Blue {
+    --bg-left: var(--blue);
+    --bg-right: var(--blue);
+}
+
+.Yellow {
+    --bg-left: var(--yellow);
+    --bg-right: var(--yellow);
+}
+
+.Purple.Yellow {
+    --bg-left: var(--purple);
+    --bg-right: var(--yellow);
+}
+.Purple.Green {
+    --bg-left: var(--purple);
+    --bg-right: var(--green);
+}
+.Purple.Blue {
+    --bg-left: var(--purple);
+    --bg-right: var(--blue);
+}
+.Blue.Yellow {
+    --bg-left: var(--blue);
+    --bg-right: var(--yellow);
+}
+.Blue.Green {
+    --bg-left: var(--blue);
+    --bg-right: var(--green);
+}
+.Green.Yellow {
+    --bg-left: var(--green);
+    --bg-right: var(--yellow);
+}

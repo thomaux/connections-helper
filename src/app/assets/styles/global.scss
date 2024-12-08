@@ -1,0 +1,23 @@
+:root {
+    --purple: #ba81c5;
+    --yellow: #f9df6d;
+    --green: #a0c35a;
+    --blue: #b0c4ef;
+    --loader-color: #efefe6;
+}
+
+@property --bg-left {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #efefe6;
+}
+
+@property --bg-right {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #efefe6;
+}
+
+html {
+    font-family: Arial, Helvetica, sans-serif;
+}
