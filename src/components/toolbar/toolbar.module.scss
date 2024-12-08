@@ -5,16 +5,9 @@
   justify-content: center;
 }
 
-.Button {
-  --bg-left: rgb(239, 239, 239);
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
+.ToolbarButton {
   width: 120px;
   margin: 15px;
-  border: none;
 
   &.Active {
     border: 3px solid #5a594e;
