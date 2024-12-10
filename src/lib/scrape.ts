@@ -5,7 +5,7 @@ export default async function scrape(url: string) {
   const options = process.env.NODE_ENV === 'production'
     ? {
         args: chrome.args,
-        executablePath: await chrome.executablePath(),
+        executablePath: await chrome.executablePath('https://github.com/Sparticuz/chromium/releases/download/v131.0.1/chromium-v131.0.1-pack.tar'),
         headless: chrome.headless
       }
     : {
