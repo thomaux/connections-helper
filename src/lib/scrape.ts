@@ -2,7 +2,7 @@ import chrome from '@sparticuz/chromium';
 import puppeteer from 'puppeteer-core';
 
 export default async function scrape(url: string) {
-  const options = process.env.AWS_REGION
+  const options = process.env.NODE_ENV === 'production'
     ? {
         args: chrome.args,
         executablePath: await chrome.executablePath(),
