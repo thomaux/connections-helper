@@ -1,10 +1,9 @@
-'use client'
-import { useAppSelector } from '../../lib/hooks';
-import { Cell } from '../cell/cell';
+import { Cell } from '../cell/cell.tsx';
 import styles from './board.module.scss';
+import React from 'react';
 
 export function Board() {
-    const words = useAppSelector((state) => state.helper.words);
+    const words = []; // useAppSelector((state) => state.helper.words);
     return (
         <div className={styles.Board}>
             {words.map((word) => (

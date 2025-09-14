@@ -1,5 +1,5 @@
-import { Action, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NamedColor } from "./named-color";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { NamedColor } from "../../../types/named-color.ts";
 
 type Word = {
   value: string;
@@ -21,10 +21,10 @@ type HelperState = {
 const initialState: HelperState = {
   words: [],
   colors: [
-    { name: NamedColor.YELLOW, colorState: "open" },
-    { name: NamedColor.BLUE, colorState: "open" },
-    { name: NamedColor.GREEN, colorState: "open" },
-    { name: NamedColor.PURPLE, colorState: "open" },
+    { name: 'yellow', colorState: "open" },
+    { name: 'blue', colorState: "open" },
+    { name: 'green', colorState: "open" },
+    { name: 'purple', colorState: "open" },
   ],
 };
 

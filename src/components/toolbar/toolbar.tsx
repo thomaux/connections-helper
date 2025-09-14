@@ -1,13 +1,12 @@
-"use client";
+import React from 'react';
 import cn from "classnames";
-import { resetBoard, setActiveColor } from "../../lib/features/word/helperSlice";
-import { useAppDispatch, useAppSelector } from "../../lib/hooks";
-import { Button } from '../button/button';
+import { resetBoard, setActiveColor } from "../../lib/features/word/helperSlice.ts";
+import { Button } from '../button/button.tsx';
 import styles from "./toolbar.module.scss";
 
 export function Toolbar() {
-  const colors = useAppSelector(({ helper }) => helper.colors);
-  const dispatch = useAppDispatch();
+  const colors = []; // useAppSelector(({ helper }) => helper.colors);
+  const dispatch = (props: unknown) => {}
 
   return (
     <div className={styles.Toolbar}>

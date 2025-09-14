@@ -1,0 +1,1 @@
+export type NamedColor = 'yellow' | 'blue' | 'green' | 'purple';

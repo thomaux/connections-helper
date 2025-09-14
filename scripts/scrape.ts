@@ -1,12 +1,12 @@
 import chrome from '@sparticuz/chromium';
-import puppeteer from 'puppeteer-core';
+import puppeteer, { ElementHandle } from 'puppeteer-core';
 
-export default async function scrape(url: string) {
+async function scrape(url: string) {
   const options = process.env.NODE_ENV === 'production'
     ? {
         args: chrome.args,
-        executablePath: await chrome.executablePath('https://github.com/Sparticuz/chromium/releases/download/v131.0.1/chromium-v131.0.1-pack.tar'),
-        headless: chrome.headless
+        executablePath: await chrome.executablePath(),
+        headless: true
       }
     : {
         args: [],
@@ -22,15 +22,21 @@ export default async function scrape(url: string) {
   await page.goto(url, { waitUntil: 'networkidle0' });
 
    // Reject cookies
-   await page.click(".fides-reject-all-button");
+   await page.waitForSelector(".fides-reject-all-button");
+   const rejectCookieButton$ = (await page.$$(".fides-reject-all-button"))[0];
+   await rejectCookieButton$.evaluate((el) => (el as HTMLButtonElement).click());
 
-   // Accept terms
-   await new Promise((resolve) => setTimeout(resolve, 1000));
-   await page.click(".purr-blocker-card__button");
+  //  // Accept terms
+  //  await new Promise((resolve) => setTimeout(resolve, 1000));
+  //  await page.click(".purr-blocker-card__button");
  
    // Start game
-   await new Promise((resolve) => setTimeout(resolve, 1000));
+  //  await new Promise((resolve) => setTimeout(resolve, 1000));
    await page.click('button[data-testid="moment-btn-play"]');
+
+   await page.screenshot({
+    path: 'hn.png',
+  });
  
    await page.waitForSelector("#default-choices");
    const items$ = await page.$$("#default-choices label");
@@ -48,4 +54,12 @@ export default async function scrape(url: string) {
    await browser.close();
  
    return textContents;
+}
+
+try {
+  await scrape("https://www.nytimes.com/games/connections");
+  process.exit(0);
+} catch (error) {
+  console.error(error);
+  process.exit(1);
 }

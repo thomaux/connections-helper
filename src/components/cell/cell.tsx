@@ -1,7 +1,7 @@
-import { toggleActiveColor } from '../../lib/features/word/helperSlice';
-import { NamedColor } from '../../lib/features/word/named-color';
-import { useAppDispatch } from '../../lib/hooks';
-import { Button } from '../button/button';
+import React from 'react';
+
+import type { NamedColor } from '../../types/named-color.ts';
+import { Button } from '../button/button.tsx';
 import styles from './cell.module.scss';
 
 type CellProps = {
@@ -10,7 +10,8 @@ type CellProps = {
 };
 
 export function Cell({ word, colors }: CellProps) {
-    const dispatch = useAppDispatch();
+    const dispatch = (props: unknown) => {};
+    const toggleActiveColor = (props: unknown) => {};
 
     return (
         <Button className={styles.Cell} colors={colors} onClick={() => dispatch(toggleActiveColor({ word }))}>{word}</Button>
