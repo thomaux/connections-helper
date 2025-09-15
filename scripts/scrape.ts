@@ -1,5 +1,6 @@
 import chrome from '@sparticuz/chromium';
-import puppeteer, { ElementHandle } from 'puppeteer-core';
+import { writeFile } from 'fs/promises';
+import puppeteer from 'puppeteer-core';
 
 async function scrape(url: string) {
   const options = process.env.NODE_ENV === 'production'
@@ -23,21 +24,12 @@ async function scrape(url: string) {
 
    // Reject cookies
    await page.waitForSelector(".fides-reject-all-button");
-   const rejectCookieButton$ = (await page.$$(".fides-reject-all-button"))[0];
-   await rejectCookieButton$.evaluate((el) => (el as HTMLButtonElement).click());
-
-  //  // Accept terms
-  //  await new Promise((resolve) => setTimeout(resolve, 1000));
-  //  await page.click(".purr-blocker-card__button");
+   const rejectCookieButtons$ = await page.$$(".fides-reject-all-button");
+   await Promise.all(rejectCookieButtons$.map((button) => button.evaluate((el) => (el as HTMLButtonElement).click())));
  
    // Start game
-  //  await new Promise((resolve) => setTimeout(resolve, 1000));
    await page.click('button[data-testid="moment-btn-play"]');
-
-   await page.screenshot({
-    path: 'hn.png',
-  });
- 
+   
    await page.waitForSelector("#default-choices");
    const items$ = await page.$$("#default-choices label");
  
@@ -57,7 +49,8 @@ async function scrape(url: string) {
 }
 
 try {
-  await scrape("https://www.nytimes.com/games/connections");
+  const words = await scrape("https://www.nytimes.com/games/connections");
+  await writeFile(".env", `VITE_WORDS=${words.join(",")}`);
   process.exit(0);
 } catch (error) {
   console.error(error);
