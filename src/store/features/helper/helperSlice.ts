@@ -19,7 +19,10 @@ type HelperState = {
 };
 
 const initialState: HelperState = {
-  words: [],
+  words: import.meta.env.VITE_WORDS.split(',').map((word: string) => ({
+    value: word,
+    colors: [],
+  })),
   colors: [
     { name: 'yellow', colorState: "open" },
     { name: 'blue', colorState: "open" },
@@ -32,15 +35,6 @@ export const helperSlice = createSlice({
   name: "helper",
   initialState,
   reducers: {
-    initializeWords: (state, action: PayloadAction<{ words: string[] }>) => {
-      return {
-        ...state,
-        words: action.payload.words.map((word) => ({
-          value: word,
-          colors: [],
-        })),
-      };
-    },
     toggleActiveColor: (state, action: PayloadAction<{ word: string }>) => {
       return {
         ...state,
@@ -83,6 +77,6 @@ export const helperSlice = createSlice({
   },
 });
 
-export const { initializeWords, toggleActiveColor, setActiveColor, resetBoard } =
+export const { toggleActiveColor, setActiveColor, resetBoard } =
   helperSlice.actions;
-export default helperSlice.reducer;
+
