@@ -21,13 +21,16 @@ async function scrape(url: string) {
   const browser = await puppeteer.launch(options);
   const page = await browser.newPage();
   await page.goto(url, { waitUntil: 'networkidle0' });
+  console.log("navigated to the page");
 
    // Reject cookies
    const rejectCookieButtons$ = await page.$$(".fides-reject-all-button");
+   console.log(`found ${rejectCookieButtons$.length} reject cookie buttons`);
    await Promise.all(rejectCookieButtons$.map((button) => button.evaluate((el) => (el as HTMLButtonElement).click())));
  
    // Start game
    await page.click('button[data-testid="moment-btn-play"]');
+   console.log("clicked play button");
    
    await page.waitForSelector("#default-choices");
    const items$ = await page.$$("#default-choices label");
@@ -41,6 +44,8 @@ async function scrape(url: string) {
    const textContents = await Promise.all(
      items$.map((item$) => item$.evaluate((item) => item.textContent))
    );
+
+   console.log(`found following words on the board: ${textContents.join(", ")}`);
  
    await browser.close();
  
