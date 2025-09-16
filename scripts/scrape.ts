@@ -3,7 +3,7 @@ import { writeFile } from 'fs/promises';
 import puppeteer from 'puppeteer-core';
 
 async function scrape(url: string) {
-  const options = process.env.NODE_ENV === 'production'
+  const options = process.env.NODE_ENV === 'cli'
     ? {
         args: chrome.args,
         executablePath: await chrome.executablePath(),

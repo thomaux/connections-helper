@@ -1,0 +1,52 @@
+name: Scrape Connections
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run the scrape in'
+        required: true
+        default: 'cli'
+        type: choice
+        options:
+          - cli
+          - development
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Set environment variable
+        run: echo "NODE_ENV=${{ inputs.environment }}" >> $GITHUB_ENV
+        
+      - name: Run scrape script
+        run: npm run scrape
+        
+      - name: Upload .env file as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: env-file
+          path: .env
+          retention-days: 7
+          
+      - name: Display scraped words
+        run: |
+          if [ -f .env ]; then
+            echo "Scraped words:"
+            cat .env
+          else
+            echo "No .env file found"
+          fi
