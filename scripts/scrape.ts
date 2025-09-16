@@ -23,7 +23,6 @@ async function scrape(url: string) {
   await page.goto(url, { waitUntil: 'networkidle0' });
 
    // Reject cookies
-   await page.waitForSelector(".fides-reject-all-button");
    const rejectCookieButtons$ = await page.$$(".fides-reject-all-button");
    await Promise.all(rejectCookieButtons$.map((button) => button.evaluate((el) => (el as HTMLButtonElement).click())));
  
