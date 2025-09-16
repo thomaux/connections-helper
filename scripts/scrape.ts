@@ -47,7 +47,9 @@ async function scrape(url: string) {
 
    console.log(`found following words on the board: ${textContents.join(", ")}`);
  
-   await browser.close();
+   if(process.env.NODE_ENV !== 'cli') {
+     await browser.close();
+   }
  
    return textContents;
 }
