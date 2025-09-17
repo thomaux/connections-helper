@@ -1,7 +1,12 @@
 .Cell {
-    width: 150px;
-    margin: 20px;
+    width: 22.5%;
     font-size: 20px;
     font-weight: bold;
     text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+    .Cell {
+        font-size: 16px;
+    }
 }
