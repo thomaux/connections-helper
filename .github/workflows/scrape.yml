@@ -1,16 +1,20 @@
 name: Scrape Connections
 
 on:
-      workflow_dispatch:
-        inputs:
-          environment:
-            description: 'Environment to run the scrape in'
-            required: true
-            default: 'ci'
-            type: choice
-            options:
-              - ci
-              - development
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 4 * * *'  # Run daily at 4:00 AM GMT
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run the scrape in'
+        required: true
+        default: 'ci'
+        type: choice
+        options:
+          - ci
+          - development
 
 jobs:
   scrape:
@@ -30,7 +34,7 @@ jobs:
         run: npm ci
         
       - name: Set environment variable
-        run: echo "NODE_ENV=${{ inputs.environment }}" >> $GITHUB_ENV
+        run: echo "NODE_ENV=${{ inputs.environment || 'ci' }}" >> $GITHUB_ENV
         
       - name: Run scrape script
         run: npm run scrape
