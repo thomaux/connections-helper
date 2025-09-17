@@ -3,7 +3,7 @@ import { writeFile } from 'fs/promises';
 import puppeteer from 'puppeteer-core';
 
 async function scrape(url: string) {
-  const options = process.env.NODE_ENV === 'cli'
+  const options = process.env.NODE_ENV === 'ci'
     ? {
         args: chrome.args,
         executablePath: await chrome.executablePath(),
@@ -47,7 +47,7 @@ async function scrape(url: string) {
 
    console.log(`found following words on the board: ${textContents.join(", ")}`);
  
-   if(process.env.NODE_ENV !== 'cli') {
+   if(process.env.NODE_ENV !== 'ci') {
      await browser.close();
    }
  

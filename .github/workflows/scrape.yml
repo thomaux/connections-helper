@@ -1,16 +1,16 @@
 name: Scrape Connections
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to run the scrape in'
-        required: true
-        default: 'cli'
-        type: choice
-        options:
-          - cli
-          - development
+      workflow_dispatch:
+        inputs:
+          environment:
+            description: 'Environment to run the scrape in'
+            required: true
+            default: 'ci'
+            type: choice
+            options:
+              - ci
+              - development
 
 jobs:
   scrape:
