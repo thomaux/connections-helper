@@ -41,6 +41,8 @@ jobs:
           name: env-file
           path: .env
           retention-days: 7
+          include-hidden-files: true
+          if-no-files-found: error
           
       - name: Display scraped words
         run: |
