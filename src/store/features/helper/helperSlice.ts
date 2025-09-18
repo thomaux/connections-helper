@@ -11,7 +11,7 @@ type Color = {
   colorState: ColorState;
 };
 
-type ColorState = "open" | "active" | "lockable" | "locked";
+type ColorState = "open" | "active" | "locked";
 
 type HelperState = {
   words: Word[];
@@ -45,10 +45,16 @@ export const helperSlice = createSlice({
           const activeColor = state.colors.find(
             ({ colorState }) => colorState === "active"
           )?.name;
-          const colors = word.colors.includes(activeColor)
-            ? word.colors.filter((color) => color !== activeColor)
-            : [...word.colors, activeColor];
-          return { ...word, colors };
+
+          if(word.colors.includes(activeColor)) {
+            return { ...word, colors: word.colors.filter((color) => color !== activeColor) };
+          }
+
+          if(word.colors.some((color) => state.colors.find(({ name }) => name === color)?.colorState === "locked")) {
+            return word;
+          }
+
+          return word.colors.length < 2 ? { ...word, colors: [...word.colors, activeColor] } : word;
         }),
       };
     },
@@ -58,10 +64,13 @@ export const helperSlice = createSlice({
     ) => {
       return {
         ...state,
-        colors: state.colors.map(({ name }) => ({
+        colors: state.colors.map(({ name, colorState }) => name === payload.color ? {
           name,
-          colorState: name === payload.color ? "active" : "open",
-        })),
+          colorState: "active",
+        } : {
+          name,
+          colorState: colorState === "active" ? "open" : colorState,
+        }),
       };
     },
     resetBoard: (state) => ({
@@ -73,10 +82,28 @@ export const helperSlice = createSlice({
         ...color,
         colorState: "open",
       })),
-    })
+    }),
+    lockColor: (state, { payload }: PayloadAction<{ color: NamedColor }>) => ({
+      ...state,
+      colors: state.colors.map((color) => ({
+        ...color,
+        colorState: color.name === payload.color ? "locked" : color.colorState,
+      })),
+      words: state.words.map((word) => ( word.colors.includes(payload.color) ? {
+        ...word,
+        colors: [payload.color],
+      } : word)),
+    }),
+    unlockColor: (state, { payload }: PayloadAction<{ color: NamedColor }>) => ({
+      ...state,
+      colors: state.colors.map((color) => ({
+        ...color,
+        colorState: color.name === payload.color ? "open" : color.colorState,
+      })),
+    }),
   },
 });
 
-export const { toggleActiveColor, setActiveColor, resetBoard } =
+export const { toggleActiveColor, setActiveColor, resetBoard, lockColor, unlockColor } =
   helperSlice.actions;
 

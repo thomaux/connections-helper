@@ -1,15 +1,30 @@
 .Toolbar {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
   gap: 1.875%;
+  height: 200px;
+}
+
+.ToolbarButtonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5%;
+  width: 20%;
+  height: 100%;
 }
 
 .ToolbarButton {
-  width: 20%;
-  
   &.Active {
     border: 5px solid #5a594e;
+  }
+
+  &.Locked {
+    opacity: 0.25;
+  }
+
+  &.Locker {
+    font-size: 2rem;
   }
 }

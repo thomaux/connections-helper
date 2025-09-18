@@ -8,11 +8,12 @@ type ButtonProps = {
     children?: React.ReactNode;
     onClick: () => void;
     className?: string;
+    isDisabled?: boolean;
 };
 
-export function Button({ colors = [], children = null, onClick, className }: ButtonProps) {
+export function Button({ colors = [], children = null, onClick, className, isDisabled = false }: ButtonProps) {
     return (
-        <button className={cn(className, styles.Button, {
+        <button disabled={isDisabled} className={cn(className, styles.Button, {
             [styles.Yellow]: colors.includes('yellow'),
             [styles.Blue]: colors.includes('blue'),
             [styles.Green]: colors.includes('green'),
