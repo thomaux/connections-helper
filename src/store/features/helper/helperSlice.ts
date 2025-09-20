@@ -14,24 +14,13 @@ type Color = {
 type ColorState = "open" | "active" | "locked";
 
 type HelperState = {
+  id: string;
   words: Word[];
   colors: Color[];
   lockedColorOrder: NamedColor[];
 };
 
-const initialState: HelperState = {
-  words: import.meta.env.VITE_WORDS.split(",").map((word: string) => ({
-    value: word,
-    colors: [],
-  })),
-  colors: [
-    { name: "yellow", colorState: "open" },
-    { name: "blue", colorState: "open" },
-    { name: "green", colorState: "open" },
-    { name: "purple", colorState: "open" },
-  ],
-  lockedColorOrder: [],
-};
+const initialState: HelperState = getInitialState();
 
 export const helperSlice = createSlice({
   name: "helper",
@@ -91,6 +80,7 @@ export const helperSlice = createSlice({
       };
     },
     resetBoard: (state) => ({
+      ...state,
       words: state.words.map((word) => ({
         ...word,
         colors: [],
@@ -181,3 +171,35 @@ export const selectWordsOrderedByLockedColors = (state: {
     return 0;
   });
 };
+
+function getInitialState(): HelperState {
+  const savedState = localStorage.getItem("helper");
+  const words = import.meta.env.VITE_WORDS;
+  const id = btoa(words);
+
+  if (savedState) {
+    try {
+      const parsedState = JSON.parse(savedState);
+      if (parsedState.id === id) {
+        return JSON.parse(savedState);
+      }
+    } catch (error) {
+      console.error("Error parsing saved state:", error);
+    }
+  }
+  
+  return {
+    id,
+    words: words.split(",").map((word: string) => ({
+      value: word,
+      colors: [],
+    })),
+    colors: [
+      { name: "yellow", colorState: "open" },
+      { name: "blue", colorState: "open" },
+      { name: "green", colorState: "open" },
+      { name: "purple", colorState: "open" },
+    ],
+    lockedColorOrder: [],
+  };
+}
