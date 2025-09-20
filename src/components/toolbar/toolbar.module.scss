@@ -4,7 +4,7 @@
   align-items: start;
   justify-content: space-between;
   gap: 1.875%;
-  height: 200px;
+  height: 300px;
 }
 
 .ToolbarButtonGroup {
@@ -16,15 +16,13 @@
 }
 
 .ToolbarButton {
+  font-size: 2rem;
+  
   &.Active {
     border: 5px solid #5a594e;
   }
 
   &.Locked {
     opacity: 0.25;
-  }
-
-  &.Locker {
-    font-size: 2rem;
   }
 }

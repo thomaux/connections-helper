@@ -101,9 +101,20 @@ export const helperSlice = createSlice({
         colorState: color.name === payload.color ? "open" : color.colorState,
       })),
     }),
+    cleanColor: (state, { payload }: PayloadAction<{ color: NamedColor }>) => ({
+      ...state,
+      words: state.words.map((word) => ({
+        ...word,
+        colors: word.colors.filter((color) => color !== payload.color),
+      })),
+      colors: state.colors.map((color) => ({
+        ...color,
+        colorState: color.name === payload.color ? "open" : color.colorState,
+      })),
+    }),
   },
 });
 
-export const { toggleActiveColor, setActiveColor, resetBoard, lockColor, unlockColor } =
+export const { toggleActiveColor, setActiveColor, resetBoard, lockColor, unlockColor, cleanColor } =
   helperSlice.actions;
 
