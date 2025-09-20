@@ -2,9 +2,10 @@ import { Cell } from "../cell/cell.tsx";
 import styles from "./board.module.scss";
 import React from "react";
 import { useAppSelector } from "../../store/hooks.ts";
+import { selectWordsOrderedByLockedColors } from "../../store/features/helper/helperSlice.ts";
 
 export function Board() {
-  const words = useAppSelector((state) => state.helper.words);
+  const words = useAppSelector(selectWordsOrderedByLockedColors);
   return (
     <div className={styles.Board}>
       {words.map((word) => (
