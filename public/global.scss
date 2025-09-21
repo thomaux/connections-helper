@@ -1,3 +1,16 @@
 html {
     font-family: Arial, Helvetica, sans-serif;
 }
+
+body {
+    margin: 2vh;
+}
+
+.app {
+    max-width: 800px;
+    height: 96vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

@@ -4,12 +4,13 @@
   align-items: start;
   justify-content: space-between;
   gap: 1.875%;
-  height: 300px;
+  max-height: 300px;
+  flex-grow: 1;
 }
 
 .ToolbarButtonGroup {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 3.5%;
   width: 20%;
   height: 100%;
