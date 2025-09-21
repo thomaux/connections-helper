@@ -1,17 +1,8 @@
-import React from 'react';
-import { Board } from './components/board/board.tsx';
-import { Toolbar } from './components/toolbar/toolbar.tsx';
+import React from "react";
 import { createRoot } from "react-dom/client";
-import { Provider } from 'react-redux';
-import { store } from './store/store.ts';
+import { App } from "./components/app/app.tsx";
 
 const root = document.createElement("div");
-root.classList.add('app');
 document.body.appendChild(root);
 
-createRoot(root).render(
-<Provider store={store}>
-    <Board />
-    <Toolbar />
-</Provider>,
-);
+createRoot(root).render(<App />);
