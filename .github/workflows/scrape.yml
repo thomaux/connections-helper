@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
   schedule:
-    - cron: '0 4 * * *'  # Run daily at 4:00 AM GMT
+    - cron: '23 4 * * *'  # ~06:23 in GMT+2; off-peak minute to reduce scheduler delay
   workflow_dispatch:
     inputs:
       environment:
